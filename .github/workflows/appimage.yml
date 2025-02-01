@@ -10,6 +10,8 @@ on:
       - 'repack_appimage.sh'
       - '.github/workflows/appimage.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日的午夜（0点）运行
 
 jobs:
   x86_64:
@@ -42,8 +44,7 @@ jobs:
           # exit 1
         fi
 
-    - name: Upload QQ # 手动触发时上传
-      if: github.event_name == 'workflow_dispatch'
+    - name: Upload QQ
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.repack.outputs.file }}
@@ -69,8 +70,7 @@ jobs:
         file=$(find . -iname "*arm64*" -printf "%f\n")
         echo "file=$file" >> $GITHUB_OUTPUT
 
-    - name: Upload QQ # 手动触发时上传
-      if: github.event_name == 'workflow_dispatch'
+    - name: Upload QQ
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.repack.outputs.file }}
